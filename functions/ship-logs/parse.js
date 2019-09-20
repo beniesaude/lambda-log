@@ -68,6 +68,16 @@ let parseLogMessage = function (logGroup, logStream, functionName, lambdaVersion
   let requestId = parts[1];
   let event     = parts[2];
 
+  if(!(timestamp && requestId && event)) {
+    timestamp = logEvent.timestamp;
+    requestId = logEvent.id;
+    event = logEvent.message;
+    if(!(timestamp && requestId && event)) {
+      console.error(`Malformed log event; can't parse: "${JSON.stringify(logEvent)}"`);
+      return null;
+    }
+  }
+
   if (event.startsWith("MONITORING|")) {
     return null;
   }
@@ -115,6 +125,16 @@ let parseCustomMetric = function (functionName, version, logEvent) {
   let timestamp = parts[0];
   let requestId = parts[1];
   let event     = parts[2];
+
+  if(!(timestamp && requestId && event)) {
+    timestamp = logEvent.timestamp;
+    requestId = logEvent.id;
+    event = logEvent.message;
+    if(!(timestamp && requestId && event)) {
+      console.error(`Malformed log event; can't parse: "${JSON.stringify(logEvent)}"`);
+      return null;
+    }
+  }  
 
   if (!event.startsWith("MONITORING|")) {
     return null;
