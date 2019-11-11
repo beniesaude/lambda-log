@@ -7,8 +7,8 @@ plugins:
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: dev
-  region: us-west-2
+  stage: all
+  region: ${opt:region, 'us-west-2'}
   versionFunctions: false
   
 functions:
@@ -20,7 +20,7 @@ functions:
       logstash_host: listener.logz.io
       logstash_port: 5050
       token: jSswREXMyQQOpqWkYtHRhNzqvMoIfPvm
-    iamRoleStatementsName: ship-logs-role
+    iamRoleStatementsName: ship-logs-role-${self:provider.region}
     iamRoleStatements:
       - Effect: "Allow"
         Action: "cloudwatch:PutMetricData"
