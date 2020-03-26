@@ -6,8 +6,8 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs8.10
-  stage: all
+  runtime: nodejs12.x
+  stage: dev
   region: ${opt:region, 'us-west-2'}
   versionFunctions: false
   

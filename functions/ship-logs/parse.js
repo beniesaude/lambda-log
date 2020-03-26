@@ -68,6 +68,12 @@ let parseLogMessage = function (logGroup, logStream, functionName, lambdaVersion
   let requestId = parts[1];
   let event     = parts[2];
 
+  // in some cases, a log event may have an extra "log level" entry, like this: 
+  // "2017-04-26T10:41:09.023Z	db95c6da-2a6c-11e7-9550-c91b65931beb\tINFO\tloading index.html...\n"
+  if (event === 'INFO' || event === 'ERROR') {
+    event = logEvent.message.split('\t', 4)[3]
+  }
+
   if(!(timestamp && requestId && event)) {
     timestamp = logEvent.timestamp;
     requestId = logEvent.id;
