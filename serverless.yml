@@ -7,7 +7,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-west-2'}
   versionFunctions: false
   
@@ -31,7 +31,7 @@ functions:
     description: Sets the log retention policy to the specified no. of days
     memorySize: 128
     environment:
-      retention_days: 3653
+      retention_days: 180
     iamRoleStatements:
       - Effect: "Allow"
         Action:
