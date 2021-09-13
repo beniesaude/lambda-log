@@ -88,13 +88,16 @@ let parseLogMessage = function (logGroup, logStream, functionName, lambdaVersion
     return null;
   }
 
+  const eventSize = JSON.stringify(logEvent).length;
+
   let log = { 
     logGroup, 
     logStream, 
     functionName, 
     lambdaVersion, 
     '@timestamp': new Date(timestamp),
-    type: 'cloudwatch'
+    type: 'cloudwatch',
+    size: eventSize
   };
   
   let fields = tryParseJson(event);
