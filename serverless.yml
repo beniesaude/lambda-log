@@ -19,7 +19,7 @@ functions:
     environment:
       logstash_host: listener.logz.io
       logstash_port: 5050
-      token: jSswREXMyQQOpqWkYtHRhNzqvMoIfPvm
+      token: ${ssm:LOGZIO_TOKEN~true}
     iamRoleStatementsName: ship-logs-role-${self:provider.region}
     iamRoleStatements:
       - Effect: "Allow"
