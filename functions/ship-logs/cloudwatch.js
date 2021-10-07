@@ -7,12 +7,13 @@ const client = new AWS.CloudWatch();
 
 let publish = co.wrap(function* (metricDatum, namespace) {
   let metricData = metricDatum.map(m => {
+    const value = m.Unit === 'Milliseconds' ? Number(m.Value) : m.Value;
     return {
       MetricName : m.MetricName,
       Dimensions : m.Dimensions,
       Timestamp  : m.Timestamp,
       Unit       : m.Unit,
-      Value      : m.Value
+      Value      : value
     };
   });
 
