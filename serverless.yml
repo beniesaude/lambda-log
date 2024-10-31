@@ -1,14 +1,13 @@
 service: cloudwatch-logs
 
 plugins:
- - serverless-pseudo-parameters
  - serverless-iam-roles-per-function
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs20.x
   stage: ${opt:stage, 'dev'}
-  region: ${opt:region, 'us-west-2'}
+  region: ${opt:region, 'sa-east-1'}
   versionFunctions: false
   
 functions:
@@ -19,7 +18,7 @@ functions:
     environment:
       logstash_host: listener.logz.io
       logstash_port: 5050
-      token: ${ssm:LOGZIO_TOKEN~true}
+      token: ${ssm:LOGZIO_TOKEN}
     iamRoleStatementsName: ship-logs-role-${self:provider.region}
     iamRoleStatements:
       - Effect: "Allow"
@@ -56,7 +55,7 @@ functions:
     memorySize: 128
     environment:
       dest_func: "${self:service}-${self:provider.stage}-ship-logs-to-logzio"
-      account_id: "#{AWS::AccountId}"
+      account_id: ${aws:accountId}
       prefix: "/aws/lambda"
     iamRoleStatements:
       - Effect: "Allow"
@@ -86,4 +85,4 @@ resources:
           Fn::Join:
             - ""
             - - "Ref" : "ShipDashlogsDashtoDashlogzioLambdaFunction"
-        Principal: logs.#{AWS::Region}.amazonaws.com
+        Principal: logs.${aws:region}.amazonaws.com
